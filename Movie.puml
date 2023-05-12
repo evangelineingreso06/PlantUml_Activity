@@ -1,0 +1,52 @@
+@startuml movie
+actor User
+participant UI
+actor Admin
+database MovieDB
+
+==Search==
+User -> UI : GET/movie/:id
+UI -> User : 200
+UI -> MovieDB : Retrieve list of matching movies
+MovieDB -> UI : List of matching movies
+UI -> User : Display list of matching movies
+User -> UI : Select a movie
+
+==available showtimes==
+UI -> MovieDatabase : POST/ movies
+MovieDB -> UI : 200
+MovieDB -> UI : Movie details and showtimes
+UI -> User : Display movie details and available showtimes
+User -> UI : Select a showtime
+UI -> MovieDB : Check seat availability
+MovieDB -> UI : Seat availability
+UI -> User : Choose seats
+User -> UI : Confirm seat selection
+
+==confirm the seats and reservation.==
+UI -> MovieDB : Confirm seat availability and create reservation
+MovieDB -> UI : Reservation created
+UI -> User : Display reservation confirmation
+
+==proceed to checkout==
+User -> UI : Proceed to checkout
+UI -> UI : Process payment
+UI -> MovieDB : Update movie seat availability
+MovieDB -> UI : Seat availability updated
+UI -> User : Display payment confirmation
+
+==Administrator==
+Admin -> UI : Login as admin
+UI -> MovieDB : POST/ movie
+MovieDB -> UI : 200
+UI -> MovieDB : Save movie information
+Admin -> UI: Remove movie from database
+UI -> MovieDB : DELETE/ movie:id
+MovieDB -> UI : 204 no content
+UI -> MovieDB : Delete movie information
+Admin -> UI : Manage movie showtimes
+UI -> MovieDB : PUT/ movie:id
+MovieDB -> UI : 200
+UI -> Admin : Update movie showtimes
+
+@enduml

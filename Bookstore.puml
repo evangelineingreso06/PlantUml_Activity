@@ -1,0 +1,34 @@
+@startuml
+actor User
+actor Administrator
+participant System
+control Cart
+database BookStore
+
+User -> System: Login
+User -> System: Browse store
+System -> User: Display book list
+
+==Add Book To Cart==
+User -> System: Add Book to Cart(book)
+System -> BookStore: Put /cart:id/book:id
+System -> System: Validate Book Availability(book)
+System -> System: Update Cart(book)
+System -> User: Confirm Book added to Cart 
+User -> System: Proceed to checkout
+System -> Cart: Process payment
+System -> BookStore: Calculate total cost
+System -> User: Display checkout page
+User -> System: Submit payment
+System -> BookStore: Process payment
+System -> Cart: Clear cart
+System -> User: Display confirmation page
+
+
+=== Administrator ==
+Administrator -> System: Login as admin
+Administrator -> System: Add book to store
+System -> BookStore: Save book information
+Administrator -> System: Remove book from store
+System -> BookStore: Delete book information
+@enduml
